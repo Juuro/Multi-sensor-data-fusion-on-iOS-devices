@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Auswahl geeigneter Hardware
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Auswahl geeigneter Hardware}
+  \label{Auswahl geeigneter Hardware}
+  
+  \medskip
+  Bei der Suche nach einem passenden Gerät kamen mehere Kriterien zum Tragen. Es sollte der visualisierung größer als ein Smartphone sein aber trotzdem portabler als ein herkömmliches Notebook. Es steht also fest, dass ein Tablet am besten geeignet ist für diese Art Anwendung.
+
+	\section{Überblick am Markt befindlicher Geräte hinsichtlich IMU-Ausstattung}
+	Ernsthaft am Markt vertreten waren zum Zeitpunkt der Hardware-Entscheidung (Anfang 2011) nur das Apple iPad 1 und das Moterola Xoom. Das iPad war mit Accelerometer und Kompass ausgestattet, jedoch nicht mit einem Gyroskop. Das Moterola Xoom hatte alle drei IMUs verbaut. Allerdings war das Android-Betriebssystem anfangs Berichten zufolge instabil. Diese Android Version war die erste, die für Tablets optimiert war. 
+	
+	\section{Wahl iPad 2}
+	Das Apple iPad 2 war das erste ernstzunehmende Tablet das alle drei, für unsere Zwecke, wichtigen IMUs mitbrachte. Zum Erscheinungszeitpunkt war Apple auch der Hersteller mit der meisten Erfahrung. Das iPad der ersten Generation war bereits ein Jahr auf dem Markt und hatte mit iOS ein ausgereiftes Betriebssystem. iOS wird auf dem Apple iPhone schon seit 2007 verwendet. Man konnte also sicher gehen, dass ein ausgereiftes Betriebssystem vorhanden ist.
+
+	Abgesehen von der Ausstattung hatte das Apple iPad Anfang 2011 den größten Marktanteil mit sehr großem Abstand zu allen anderen Geräten. Auch das Betriebssystem iOS war mit großem Abstand marktführend.
+	
+	\section{Verfügbare APIs}
+	Bei iOS sind für unsere Zwecke vorallem zwei Frameworks wichtig. CoreLocation im den Kompass und das Accelerometer auszulesen und CoreMotion um das Gyroskop oder auch das Accelerometer auszulesen.\\
+
+CoreMotion liefert einerseits rohe Daten wie zum Beispiel die Drehraten des Gyroskops, andererseits aber auch bereits bereinigte Daten. Zum Beispiel lassen sich Beschleunigung und Gravitation getrennt auslesen.

@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Eigener Ansatz
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Eigener Ansatz}
+  \label{Ansatz}
+  
+Die Orientierungs-Angabe, die man aus den Gyroskop-Daten gewinnt ist relativ zur Position des Geräts bei Beginn der Messung. Ohne zusätzliche absolute Angaben kann man nicht die absolute Orientierung im Raum bestimmen. Darum ist es von Nutzen zusätzlich den Kompass (und das Accelerometer) zu nutzen.
+  
+\section{Kompassstabilisierung mit Gyroskop}
+Eine funktionierende Orientierung lässt sich bereits mit Kompass und dem Pitch-Wert den das Gyroskop liefert realisieren. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Eine Orientierungs-Angabe als Euler-Winkel würde beispielsweise wie folgt aussehen: 
+$$
+\begin{pmatrix}
+    0.016134\\ 
+    -0.000284\\ 
+    1.618407
+  \end{pmatrix} 
+$$
+Die Werte sind in Radiant angeben. Negative Werte können zustande kommen, da die Skala von $-\pi$ bis $+\pi$ geht.
+
+
+
+
