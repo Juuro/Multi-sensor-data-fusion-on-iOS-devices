@@ -2,21 +2,44 @@
 % Auswahl geeigneter Hardware
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Auswahl geeigneter Hardware}
-  \label{Auswahl geeigneter Hardware}
+\chapter{Plattform und Werkzeuge}
+  \label{Plattform und Werkzeuge}
+  
+  \section{Plattform}
   
   \medskip
-  Bei der Suche nach einem passenden Gerät kamen mehere Kriterien zum Tragen. Es sollte der visualisierung größer als ein Smartphone sein aber trotzdem portabler als ein herkömmliches Notebook. Es steht also fest, dass ein Tablet am besten geeignet ist für diese Art Anwendung.
+Bei der Suche nach einem passenden Gerät kamen mehere Kriterien zum Tragen. Es sollte wegen der Visualisierung größer als ein Smartphone sein, aber trotzdem portabler als ein herkömmliches Notebook. Es stand also fest, dass ein Tablet am besten geeignet ist für diese Art Anwendung. Desweiteren muss das Gerät mit den oben beschriebenen Sensoren, Accelerometer, Gyroskop und Kompass ausgestattet sein.
 
-	\section{Überblick am Markt befindlicher Geräte hinsichtlich IMU-Ausstattung}
-	Ernsthaft am Markt vertreten waren zum Zeitpunkt der Hardware-Entscheidung (Anfang 2011) nur das Apple iPad 1 und das Moterola Xoom. Das iPad war mit Accelerometer und Kompass ausgestattet, jedoch nicht mit einem Gyroskop. Das Moterola Xoom hatte alle drei IMUs verbaut. Allerdings war das Android-Betriebssystem anfangs Berichten zufolge instabil. Diese Android Version war die erste, die für Tablets optimiert war. 
+	\subsection{Überblick am Markt befindlicher Geräte}
+Wirklich am Markt vertreten waren zum Zeitpunkt der Hardware-Entscheidung (Anfang 2011) nur das Apple iPad 1 und das Motorola Xoom. Das iPad war mit Accelerometer und Kompass ausgestattet, jedoch nicht mit einem Gyroskop. Das Motorola Xoom hatte alle drei IMUs verbaut. Android Version 3.0 Honeycomb erschien im Februar 2011 und war die erste Android-Version, die für Tablets ausgelegt war. \cite{ wiki:005} Allerdings war diese Version des Betriebssystems anfangs Berichten zufolge instabil.
 	
-	\section{Wahl iPad 2}
-	Das Apple iPad 2 war das erste ernstzunehmende Tablet das alle drei, für unsere Zwecke, wichtigen IMUs mitbrachte. Zum Erscheinungszeitpunkt war Apple auch der Hersteller mit der meisten Erfahrung. Das iPad der ersten Generation war bereits ein Jahr auf dem Markt und hatte mit iOS ein ausgereiftes Betriebssystem. iOS wird auf dem Apple iPhone schon seit 2007 verwendet. Man konnte also sicher gehen, dass ein ausgereiftes Betriebssystem vorhanden ist.
-
-	Abgesehen von der Ausstattung hatte das Apple iPad Anfang 2011 den größten Marktanteil mit sehr großem Abstand zu allen anderen Geräten. Auch das Betriebssystem iOS war mit großem Abstand marktführend.
+	\subsection{Wahl iPad 2}
+	Da das iPad 2 in den Startlöchern stand entschieden wir, unsere Entscheidung noch aufzuschieben. Am 11. März 2011 wurde es vorgestellt und die Ausstattung entsprach unseren Erwartungen, da es zusätzlich ein Gyroskop verbaut wurde. Zum Erscheinungszeitpunkt war Apple auch der Hersteller mit der meisten Erfahrung. Das iPad der ersten Generation war bereits ein Jahr auf dem Markt und hatte mit iOS ein ausgereiftes Betriebssystem. iOS wird auf dem Apple iPhone schon seit 2007 verwendet. Zudem war das iPad damals der unangefochtene Marktführer. Damit war auch gewährleistet, dass für eine eventuell entstehende App für Endanwender genügend potentielle Abnehmer bereit stünden.
 	
-	\section{Verfügbare APIs}
-	Bei iOS sind für unsere Zwecke vorallem zwei Frameworks wichtig. CoreLocation im den Kompass und das Accelerometer auszulesen und CoreMotion um das Gyroskop oder auch das Accelerometer auszulesen.\\
 
-CoreMotion liefert einerseits rohe Daten wie zum Beispiel die Drehraten des Gyroskops, andererseits aber auch bereits bereinigte Daten. Zum Beispiel lassen sich Beschleunigung und Gravitation getrennt auslesen.
+\section{Werkzeuge}
+
+\subsection{Frameworks}
+Zur Erstellung von iOS-Programmen steht Entwicklern Cocoa Touch von Apple zur Verfügung. Cocoa Touch ist eine Sammlung von Frameworks, die Entwickler bei der Programmierung unterstützen sollen. Grob lassen sich drei Arten von Frameworks, die in Cocoa Touch enthalten sind, nennen:
+
+\begin{itemize}
+\item Funktionen der Hardware
+\item Design-Elemente und Animationen
+\item Verarbeitung von Daten
+\end{itemize}
+
+Cocoa Touch ist in Objective-C implementiert. Somit verwenden wir auch hauptsächlich Objective-C. \cite{apple:002}
+
+Bei iOS sind für unsere Zwecke vor allem zwei Frameworks wichtig, die beide zum ersten Punkt der obigen Liste gehören. Core Location um den Kompass und Core Motion um das Gyroskop und das Accelerometer auszulesen.\\
+
+\subsubsection{Core Motion}
+Core Motion liefert Daten die, mit Bewegung zu tun haben. Das sind einerseits die rohen Daten aller drei Sensoren, die in Kapitel \ref{Konzept} beschrieben wurden. Andererseits stellt Core Motion aber auch bereits bereinigte Bewegungs-Daten zur Verfügung. Zum Beispiel lassen sich Beschleunigung und Gravitation getrennt auslesen. Core Motion nimmt auch bereits die Stabilisierung des Elevation-Werts des Gyroskop vor. Besonders interessant für unseren Anwendungsfall ist die Klasse \texttt{CMAttitude}. Sie beinhaltet die Orientierung des Geräts zum Zeitpunkt der Abfrage. \texttt{CMAttitude} stellt diese in allen drei in Kapitel \ref{Stand der Technik} beschriebenen Formen zur Verfügung.
+
+\subsubsection{Core Location}
+Core Location enthält alle Informationen, die zur Bestimmung der aktuellen Position und der Ausrichtung des Geräts nötig sind. Core Location ist auch in der Lage, aus einem Geocode die zugehörige Stadt zu ermitteln und anders herum. Für uns ist die Klasse \texttt{CMHeading} interessant. Sie stellt den aktuellen Kompass-Wert bereit.
+
+\subsection{Unity}
+Unity ist eine Spiele-Engine zur Entwicklung von Spielen für verschiedene Plattformen. Darunter sind PC-Betriebssyteme, mobile Betriebssyteme und Browser, aber auch herkömmliche Spiele-Konsolen. Unity ist neben der Unreal Engine eine der beliebtesten Spiele-Engines. In Unity kann man komplette 3D-Welten erstellen. Unity erlaubt den Export des Projekts in ein für die Zielplattform passendes Format. Im Falle von iOS wird ein Xcode Projekt erstellt. \cite{unity}
+
+\subsection{Xcode}
+Xcode ist die Entwicklungsumgebung für iOS-Anwendungen. In Xcode wird der Quellcode geschrieben und das Interface angeordnet. Mit Xcode kann die App, an der momentan gearbeitet wird, direkt auf ein angeschlossenes iOS-Gerät kompiliert werden. Am Ende wird mit Xcode auch die Datei zur Einreichung in den AppStore erstellt.
