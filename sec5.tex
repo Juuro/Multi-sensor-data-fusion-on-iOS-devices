@@ -5,25 +5,25 @@
 \chapter{Umsetzung}
   \label{Umsetzung}
   
-  \section{Unity-Integration}
-  Als Ausgangspunkt liegt eine voll funktionsfähige Navigations-App für Bibliotheken vor. Sie wurde komplett in Unity umgesetzt. Die Einbindung der Orientierungsberechnung kann nicht direkt in Unity vorgenommen werden, da in Unity nur ein eingeschränkter Zugriff auf die Cocoa-Frameworks möglich ist. Die App wird als Xcode Projekt exportiert. Dann muss in Xcode ein Plug-in Programmiert werden, das als Schnittstelle zwischen selbst geschriebenem Objective-C-Code in Xcode und Unity dient. Dazu muss erst noch in Unity das Plug-in als Eingabe-Skript erstellt werden. Dieses Eingabe-Skript ist in C\# geschrieben.
+\section{Unity-Integration}
+Als Ausgangspunkt liegt eine voll funktionsfähige Navigations-App für Bibliotheken vor. Sie wurde komplett in Unity umgesetzt. Die Einbindung der Orientierungsberechnung kann nicht direkt in Unity vorgenommen werden, da in Unity nur ein eingeschränkter Zugang auf die Cocoa-Frameworks, die die APIs zum Zugriff auf die Hardware zur Verfügungs stellen, möglich ist. Darum wird die App ohne den Hardwarezugriff als Xcode Projekt exportiert. Dann muss in Xcode ein Plug-in programmiert werden, das als Schnittstelle zwischen selbst geschriebenem Objective-C-Code in Xcode, der die Hardware ausließt, und Unity dient. Dazu muss erst noch in Unity das Plug-in als Eingabe-Skript erstellt werden. Dieses Eingabe-Skript ist in C\# geschrieben.
 ~\\
-\begin{lstlisting}[float=htb, caption=Plug-in in Unity]
+\begin{lstlisting}[float=htb, caption=Plug-in in Unity, label=listing001]
 [DllImport ("__Internal")]
 private static extern CMQuaternion getDeviceMotion();
 \end{lstlisting}
   
-Hier wird also die externe Methode \texttt{getDeviceMotion()} aufgerufen. Das Plug-in erwartet den Datentyp \texttt{CMQuaternion}. Wir übergeben später einen Quaternion, also immer die aktuelle absolute Orientierung. \texttt{CMQuaternion} ist eigentlich ein Datentyp auf dem Core Motion Framework und somit Unity nicht bekannt. Darum musste erst noch ein \texttt{struct} mit der Bezeichung \texttt{CMQuaternion} definieren.
+In Listing \ref{listing001}  wird also die externe Methode \texttt{getDeviceMotion()} aufgerufen. Das Plug-in erwartet den Datentyp \texttt{CMQuaternion}. Später wird ein Quaternion übergeben, also immer die aktuelle absolute Orientierung. \texttt{CMQuaternion} ist eigentlich ein Datentyp auf dem Core Motion Framework und somit Unity nicht bekannt. Darum muss erst noch ein \texttt{struct} mit der Bezeichung \texttt{CMQuaternion} definiert werden (Listing \ref{listing002}).
 ~\\
-\begin{lstlisting}[float=htb, caption=Struct \texttt{CMQuaternion} in C\#]
+\begin{lstlisting}[float=htb, caption=Struct \texttt{CMQuaternion} in C\#, label=listing002]
 public struct CMQuaternion {
 	public double x, y, z, w;
 }
 \end{lstlisting}
 
-Alles weitere erfolgt jetzt direkt in Xcode. In Xcode wird eine \texttt{*.mm}-Datei angelegt zusammen mit der zugehörigen \texttt{*.h}-Datei. In der \texttt{*.mm}-Datei erfolgt die ganze Implementierung. Damit in der bestehenden App überhaupt Daten die hier berechnet werde ankommen muss als erstes die \texttt{getDeviceMotion()}-Methode implementiert werden:
+Alles weitere erfolgt jetzt direkt in Xcode. In Xcode wird eine \texttt{*.mm}-Datei angelegt zusammen mit der zugehörigen \texttt{*.h}-Datei. In der \texttt{*.mm}-Datei erfolgt die ganze Implementierung. Damit in der bestehenden App überhaupt Daten, die hier berechnet werden ankommen, muss als erstes die \texttt{getDeviceMotion()}-Methode implementiert werden:
 ~\\
-\begin{lstlisting}[float=htb, caption=Methode \texttt{getDeviceMotion}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{getDeviceMotion}, label=listing003]
 static GyroscopeData* delegateObject = nil;
 
 extern "C" {
@@ -39,24 +39,32 @@ extern "C" {
 }
 \end{lstlisting}
 
-Allerdings muss in dieser \texttt{extern  C }-Umgebung in C geschrieben werden. In C sind aber die API-Aufrufe nicht oder nur sehr umständlich möglich. Darum wird in Zeile \ref{line001} eine weitere Methode \texttt{getOrientation} aufgerufen. 
+Allerdings muss in dieser \texttt{extern  C }-Umgebung in C geschrieben werden. In C sind aber die API-Aufrufe nicht oder nur sehr umständlich möglich. Darum wird in Zeile \ref{line001} in Listing \ref{listing003} eine weitere Methode \texttt{getOrientation} aufgerufen. 
 ~\\
-\begin{lstlisting}[float=htb, caption=Methode \texttt{getOrientation}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{getOrientation}, label=listing004]
 - (CMQuaternion)getOrientation {
 	...
 	...
 }
 \end{lstlisting}
 
-Diese Methode enthält den eigentlichen Objective-C-Quellcode. In ihr können alle API-Aufrufe problemlos ausgeführt werden.
+Diese Methode (Listing \ref{listing004})  enthält den eigentlichen Objective-C-Quellcode. In ihr können alle API-Aufrufe problemlos ausgeführt werden. 
+
+In Abbildung \ref{fig:unity-integration} wird der Zusammengang der Methoden und Dateien nochmal schematisch dargestellt.
 
 \cite{unity}
 
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.5]{figures/unity-integration}
+\caption{Unity-Integration}
+\label{fig:unity-integration}
+\end{figure}
   
 \section{Vorbereitung der nötigen Daten}
-Um die Multidatenfusion durchführen zu können müssen erst alle nötigen Daten auslegesen werden. Dazu müssen \texttt{CMMotionManager}- und \texttt{CLLocationManager}-Objekte initialisert werden. 
+Um die Multidatenfusion durchführen zu können, müssen erst alle nötigen Daten ausgelesen werden. Dazu müssen \texttt{CMMotionManager}- und \texttt{CLLocationManager}-Objekte initialisert werden.  \cite{book001} \cite{book002} 
 ~\\
-\begin{lstlisting}[float=htb, caption=\texttt{locationManager} und \texttt{motionManager} initialisieren \cite{apple:003}]
+\begin{lstlisting}[float=htb, caption=\texttt{locationManager} und \texttt{motionManager} initialisieren \cite{apple:003}, label=listing005]
 // Set up locationManager
 if (locationManager == nil) {
 	locationManager=[[CLLocationManager alloc] init];
@@ -70,12 +78,11 @@ if (motionManager == nil) {
 }
 \end{lstlisting}
 
-In Zeile \ref{line002} wird die Genauigkeit des \texttt{CLLocationManager}-Objekts und in Zeile \ref{line003} die Update-Frequenz des \texttt{CMMotionManager}-Objekts eingestellt. Der Kompass-Wert den wir aus dem \texttt{CLLocationManager}-Objekt auslesen muss sehr genau sein.
+In Zeile \ref{line002} in Listing \ref{listing005} wird die Genauigkeit des \texttt{CLLocationManager}-Objekts und in Zeile \ref{line003} die Update-Frequenz des \texttt{CMMotionManager}-Objekts eingestellt. Der Kompass-Wert, der aus dem \texttt{CLLocationManager}-Objekt ausgelesen wurde, muss sehr genau sein.
 
-
-Das Auslesen des Kompass-Werts findet eventgesteuert statt. Ein neuer Wert wird nur dann ausgelesen wenn er sich vom alten Wert unterscheidet. Dazu setzen wir die minimale Winkeländerung auf $1^o$ fest.
+Das Auslesen des Kompass-Werts findet eventgesteuert statt. Ein neuer Wert wird nur dann ausgelesen, wenn er sich vom alten Wert unterscheidet. Dazu wird die minimale Winkeländerung auf $1^o$ festgesetzt.
 ~\\
-\begin{lstlisting}[float=htb, caption=\texttt{locationManager} starten \cite{apple:003}]
+\begin{lstlisting}[float=htb, caption=\texttt{locationManager} starten \cite{apple:003}, label=listing006]
 // Start listening to events from locationManager
 if ([CLLocationManager headingAvailable]) {
 	locationManager.headingFilter = 1;
@@ -83,11 +90,11 @@ if ([CLLocationManager headingAvailable]) {
 }
 \end{lstlisting}
 
-Mit dem Aufrufen der Methode \texttt{startUpdatingHeading} in Zeile \ref{line004} wird hier auch gleichzeitig das eventgesteuerte Abfragen des Kompass-Werts gestartet.
+Mit dem Aufrufen der Methode \texttt{startUpdatingHeading} in Zeile \ref{line004} in Listing \ref{listing006} wird hier auch gleichzeitig das eventgesteuerte Abfragen des Kompass-Werts gestartet.
 
-Die Methode die auf die Kompass-Änderungen hört ließt den Kompass-Wert aus und stellt ihn in einer globalen Variable zur Verfügung.
+Die Methode, die auf die Kompass-Änderungen (Listing \ref{listing007}) hört, liest den Kompass-Wert aus und stellt ihn in einer globalen Variable zur Verfügung.
 ~\\
-\begin{lstlisting}[float=htb, caption=Azimut ermittelt durch Kompass]
+\begin{lstlisting}[float=htb, caption=Azimut ermittelt durch Kompass, label=listing007]
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
 	// Get new heading
 	mHeading = newHeading.magneticHeading;    
@@ -105,11 +112,11 @@ Die Methode die auf die Kompass-Änderungen hört ließt den Kompass-Wert aus un
 }
 \end{lstlisting}
 
-Es kann vorkommen, dass in dem 3D-Modell des Raums nicht an der selben Stelle Norden ist wie in der Realität an diesem Ort. Darum muss man, wenn dieser Fall auftritt, einen Offset mit dem ausgelesenen Wert addieren. Das Resultat kann ein Wert sein der entweder größer als $360^o$ oder kleiner als $0^o$ ist. Der Wert muss dann normalisiert werden indem $360^o$ subtrahiert oder addiert werden. Jetzt haben wir die Azimut ermittelt durch den Kompass.
+Es kann vorkommen, dass in dem 3D-Modell des Raums nicht an der selben Stelle Norden ist wie in der Realität an diesem Ort. Darum muss, wenn dieser Fall auftritt, ein Offset zu dem ausgelesenen Wert addiert werden. Das Resultat kann ein Wert sein, der entweder größer als $360^o$ oder kleiner als $0^o$ ist. Der Wert muss dann normalisiert werden indem $360^o$ subtrahiert oder addiert werden. Das Ergebnis ist der Azimut-Wert, ermittelt durch den Kompass.
 
-Die Azimut-Änderung ermittelt duch das Gyroskop und die Elevation liefert das \texttt{CMMotionManager}-Objekt.
+Die Azimut-Änderung, ermittelt durch das Gyroskop und die Elevation, liefert das \texttt{CMMotionManager}-Objekt.
 ~\\
-\begin{lstlisting}[float=htb, caption=Bewegungsdaten auslesen \cite{apple:003}]
+\begin{lstlisting}[float=htb, caption=Bewegungsdaten auslesen \cite{apple:003}, label=listing008]
 if(motionManager.isDeviceMotionAvailable) {
         
 	// Listen to events from the motionManager
@@ -122,11 +129,11 @@ if(motionManager.isDeviceMotionAvailable) {
 }
 \end{lstlisting}
 
-Im \texttt{CMDeviceMotion}-Objekt werden Messungen des Accelerometers und des Gyroskops zusammengefasst. Der \texttt{motionHandler} wird immer dann aufgerufen, wenn es Bewegungs-Daten des Geräts zu verarbeiten gibt. Hier ist das alle 1/60 Sekunden der Fall, weil wir das bei der Initialisierung des \texttt{CMMotionManager}-Objekts so festgelegt haben.
+Im \texttt{CMDeviceMotion}-Objekt werden Messungen des Accelerometers und des Gyroskops zusammengefasst. Der \texttt{motionHandler} wird immer dann aufgerufen, wenn es Bewegungs-Daten des Geräts zu verarbeiten gibt. Hier ist das alle 1/60 Sekunden der Fall, weil das bei der Initialisierung des \texttt{CMMotionManager}-Objekts so festgelegt wurde.
 
-Das auslesen der eigentlichen Orientierungsdaten erfolgt in Zeile \ref{line005}. Wobei in diesem \texttt{CMAttitude}-Objekt alle drei Beschreibungs-Möglichkeiten, Euler-Winkel, Rotationsmatrix und Quaternion, zusammengefasst sind.
+Das Auslesen der eigentlichen Orientierungsdaten erfolgt in Zeile \ref{line005} von Listing \ref{listing008}. Wobei in diesem \texttt{CMAttitude}-Objekt alle drei Beschreibungs-Möglichkeiten, Euler-Winkel, Rotationsmatrix und Quaternion, zusammengefasst sind.
 ~\\
-\begin{lstlisting}[float=htb, caption=Azimut-Änderung berechnen]
+\begin{lstlisting}[float=htb, caption=Azimut-Änderung berechnen, label=listing009]
 quaternion = currentAttitude.quaternion;
 
 if (oldQuaternion.w != 0 || oldQuaternion.x != 0 || oldQuaternion.y != 0 || oldQuaternion.z != 0){
@@ -136,9 +143,9 @@ if (oldQuaternion.w != 0 || oldQuaternion.x != 0 || oldQuaternion.y != 0 || oldQ
 oldQuaternion = quaternion;
 \end{lstlisting}
 
-Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Orientierung gespeichert. Dies wird erreicht indem der inverse Quaternion des alten Werts mit dem Quaternion des neuen Werts multipliziert wird. Danach muss das Ergebnis noch normalisiert werden. Dazu wurden die vier Methoden \texttt{quaternionMagnitude}, \texttt{inverseQuaternion}, \texttt{multiplyQuaternions} und \texttt{normalizeQuaternion} geschrieben.
+Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Orientierung gespeichert. Dies wird erreicht indem der inverse Quaternion des alten Werts mit dem Quaternion des neuen Werts multipliziert wird. Danach muss das Ergebnis noch normalisiert werden. Das geschieht in Listing \ref{listing009} mit Hilfe der vier Methoden \texttt{quaternionMagnitude} (Listing \ref{listing010}), \texttt{inverseQuaternion} (Listing \ref{listing011}), \texttt{multiplyQuaternions} (Listing \ref{listing012}) und \texttt{normalizeQuaternion} (Listing \ref{listing013}).
 ~\\
-\begin{lstlisting}[float=htb, caption=Methode \texttt{quaternionMagnitude}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{quaternionMagnitude}, label=listing010]
 - (float) quaternionMagnitude:(CMQuaternion)inputQuaternion {
 	float magnitude = sqrt(inputQuaternion.w*inputQuaternion.w + inputQuaternion.x*inputQuaternion.x + inputQuaternion.y*inputQuaternion.y + inputQuaternion.z*inputQuaternion.z);
 	
@@ -147,7 +154,7 @@ Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Or
 \end{lstlisting}
 
 
-\begin{lstlisting}[float=htb, caption=Methode \texttt{inverseQuaternion}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{inverseQuaternion}, label=listing011]
 - (CMQuaternion) inverseQuaternion:(CMQuaternion)inputQuaternion {
 	float magnitude = [self quaternionMagnitude:inputQuaternion];
 	
@@ -160,7 +167,7 @@ Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Or
 }
 \end{lstlisting}
 
-\begin{lstlisting}[float=htb, caption=Methode \texttt{multiplyQuaternions}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{multiplyQuaternions}, label=listing012]
 - (CMQuaternion) multiplyQuaternions:(CMQuaternion)quaternionA:(CMQuaternion)quaternionB {
 	quaternion.w = quaternionA.w*quaternionB.w - quaternionA.x*quaternionB.x - quaternionA.y*quaternionB.y - quaternionA.z*quaternionB.z;
 	quaternion.x = quaternionA.w*quaternionB.x + quaternionA.x*quaternionB.w - quaternionA.y*quaternionB.z + quaternionA.z*quaternionB.y;
@@ -171,7 +178,7 @@ Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Or
 }
 \end{lstlisting}
 
-\begin{lstlisting}[float=htb, caption=Methode \texttt{normalizeQuaternion}]
+\begin{lstlisting}[float=htb, caption=Methode \texttt{normalizeQuaternion}, label=listing013]
 - (CMQuaternion) normalizeQuaternion:(CMQuaternion)inputQuaternion {
 	float magnitude = [self quaternionMagnitude:inputQuaternion];
 	
@@ -184,9 +191,9 @@ Die Orientierung wird als Queternion ausgelesen und die Differenz zur letzten Or
 }
 \end{lstlisting}
 
-Interessant für uns sind Azimut und Elevation. Darum berechnen wir die beiden Werte in Grad aus dem Quaternion. Die Methoden \texttt{azimutFromQuaternion} und \texttt{elevationFromQuaternion} berechnen den entsprechenden Winkel in Radian.
+Die interessanten Werte, Azimut und Elevation, werden aus dem Quaternion in Grad berechnet. Die Methoden \texttt{azimutFromQuaternion} (Listing \ref{listing014}) und \texttt{elevationFromQuaternion}  (Listing \ref{listing015}) berechnen den entsprechenden Winkel in Radian.
 ~\\
-\begin{lstlisting}[float=htb, caption=Azimut-Wert aus Quaternion berechnen]
+\begin{lstlisting}[float=htb, caption=Azimut-Wert aus Quaternion berechnen, label=listing014]
 - (float) azimutFromQuaternion:(CMQuaternion)quaternion {
 	float azimut = atan2(2*(quaternion.w*quaternion.z+quaternion.x*quaternion.y), 1 - 2*(quaternion.y*quaternion.y+quaternion.z*quaternion.z));
 	return azimut;
@@ -195,7 +202,7 @@ Interessant für uns sind Azimut und Elevation. Darum berechnen wir die beiden W
 azimutDiff = RADIANS_TO_DEGREES([self azimutFromQuaternion:diffQuaternion]);
 \end{lstlisting}
 
-\begin{lstlisting}[float=htb, float=htb, caption=Elevation-Wert aus Quaternion berechnen, label=listing001]
+\begin{lstlisting}[float=htb, float=htb, caption=Elevation-Wert aus Quaternion berechnen, label=listing015]
 - (float) elevationFromQuaternion:(CMQuaternion)quaternion {
 	float elevation = atan2(2*(quaternion.w * quaternion.x + quaternion.y * quaternion.z), 1-2 * (quaternion.x * quaternion.x + quaternion.y * quaternion.y));
 	return elevation;
@@ -206,16 +213,12 @@ elevation += M_PI/2;
 elevation = RADIANS_TO_DEGREES(elevation);
 \end{lstlisting}
 
-Bei der Elevation muss noch eine Korrektur von $90^o$ vorgenommen werden. Denn wenn man das iPad mit dem Display nach oben um $90^o$ neigt, so dass das Display zum Betrachter zeigt, befindet sich standardmäßig genau in dieser Position der Sprung von $0^o$ auf $360^o$. Um eventuellen problemen mit dieser Tatsache aus dem Weg zu gehen verschieben wir den Sprung um $90^o$ nach oben. Dann tritt er nur auf wenn der Betrachter das iPad direkt an die Decke hält.
-
-Jetzt haben wir die Azimut-Änderung und die Elevation, basierend auf Gyroskop-Daten errechnet.
-
-\cite{paper:001} \cite{wiki:007} \cite{mathworks} \cite{book001} \cite{book002}
+Bei der Elevation muss noch eine Korrektur von $90^o$ vorgenommen werden. Denn wenn man das iPad mit dem Display nach oben um $90^o$ neigt, sodass das Display zum Betrachter zeigt, befindet sich standardmäßig genau in dieser Position der Sprung von $0^o$ auf $360^o$. Um eventuellen Problemen mit dieser Tatsache aus dem Weg zu gehen, wird der Sprung um $90^o$ nach oben verschoben. Dann tritt er nur auf wenn der Betrachter das iPad direkt an die Decke hält. \cite{paper:001} \cite{mathworks}
 
 \section{Multisensordatenfusion}
-Hier müssen wir uns, danke Core Motion nur noch um den Azimut-Wert kümmern. Core Motion hat den Elevation-Wert aus dem Gyroskop bereits mit dem Accelerometer stabilisiert. Darum weißt der in Listing \ref{listing001} berechnete Elevation-Wert keinen bemerkbaren Drift mehr auf.
+Nur der Azimut-Wert muss noch selbst berechnet werden. Das Core Motion-Framework liefert bereits einen mit dem Accelerometer stabilisierten Elevation-Wert. Darum weist der in Listing \ref{listing015} berechnete Elevation-Wert keinen bemerkbaren Drift mehr auf.
 
-Nun können wir die Formel aus Kapitel \ref{formula001} umsetzen.
+Nun kann die Formel aus Kapitel \ref{formula001} umgesetzt werden.
 ~\\
 \begin{lstlisting}[float=htb, caption=Eigentliche Datenfusion, label=listing016]
 updatedAzimut = updatedAzimut - azimutDiff;(*@\label{line006}@*)
@@ -227,5 +230,43 @@ float phi = 1.0;
 updatedAzimut = (alpha* updatedAzimut + phi*heading)/(alpha+phi);(*@\label{line007}@*)         
 \end{lstlisting}
 
-In Zeile \ref{line006} aus Listing \ref{listing016} wird die Azimut-Änderung auf den vorherigen Azimut-Wert angwendet. Zeile \ref{line007} ist die genaue Umsetzung der Formel ausl \ref{formula001}. \texttt{updatedAzimut} ist der vorherige zur Drehung verwendete Azimut-Wert korrigiert um die Drehung seit dem letzten Wert. \texttt{heading} ist der durch den Kompass bestimmte Azimut-Wert. Mit den beiden Steuerungsvariablen \texttt{alpha} und \texttt{phi} wird gesteuert welche Anteile die jeweiligen Komponenten der Fusion haben.
-           
+In Zeile \ref{line006} aus Listing \ref{listing016} wird die Azimut-Änderung auf den vorherigen Azimut-Wert angewendet. Zeile \ref{line007} ist die genaue Umsetzung der Formel aus Kapitel \ref{formula001}. \texttt{updatedAzimut} ist der zur Drehung verwendete Azimut-Wert korrigiert um die Drehung seit dem letzten Wert. \texttt{heading} ist der durch den Kompass bestimmte Azimut-Wert. Mit den beiden Steuerungsvariablen \texttt{alpha} und \texttt{phi} wird gesteuert welche Anteile die jeweiligen Komponenten der Fusion haben.
+~\\
+\begin{lstlisting}[float=htb, caption=Generierung des Endergebnisses, label=listing017]
+rotation = [self createFromAxisAngle:0 :elevation :DEGREES_TO_RADIANS(updatedAzimut)];
+return rotation;
+\end{lstlisting}
+~\\
+\begin{lstlisting}[float=htb, caption=Generierung eines Quaternions aus Euler-Winkeln, label=listing018]
+- (CMQuaternion) createFromAxisAngle:(double)roll:(double)pitch:(double)yaw {
+	CMQuaternion quaternion;
+	
+	float num9 = roll * 0.5f;
+	float num6 = (float) sin((double) num9);
+	float num5 = (float) cos((double) num9);
+	float num8 = pitch * 0.5f;
+	float num4 = (float) sin((double) num8);
+	float num3 = (float) cos((double) num8);
+	float num7 = yaw * 0.5f;
+	float num2 = (float) sin((double) num7);
+	float num = (float) cos((double) num7);
+	quaternion.w = ((num * num3) * num5) + ((num2 * num4) * num6);
+	quaternion.x = ((num * num4) * num5) + ((num2 * num3) * num6);
+	quaternion.y = ((num2 * num3) * num5) - ((num * num4) * num6);
+	quaternion.z = ((num * num3) * num6) - ((num2 * num4) * num5);
+	
+	return quaternion;
+}
+\end{lstlisting}
+
+Mit Listing \ref{listing017} wird das Ergebnis zusammengefasst. Aus \texttt{elevation} und \texttt{updatedAzimut} wird mittels der Methode \texttt{createFromAxisAngle} (Listing \ref{listing018}) der Quaternion \texttt{rotation} generiert. Er ist die Rückgabe dieser Funktion und wird vom Plug-in in Unity erwartet.
+
+\section{Test-App}
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{figures/testapp}
+\caption{Test-App}
+\label{fig:testapp001}
+\end{figure}
+Um die folgenden Messungen und Grafiken für den Ergebnis-Teil zu ermitteln wurde eine eigene Test-App erstellt. Diese teilt sich mit der Navigations-App den selben Quellcode bezüglich der Orientierung. Allerdings besteht die Test-App nur aus dem Code der für die Orientierungsberechnungen wichtig ist, erweitert um eine Funktion die die Berechneten Werte in eine SQLite-Datenbank schreibt. Zusätzlich zeigt die App die drei relevanten Werte auch noch auf dem Display zur Kontrolle an. Immer wenn die App gestartet bzw. aufgerufen wird, wird eine neue Messung gestartet. Falls eine SQLite-Datei von einer vorherigen Messung noch vorhanden ist wir ddiese überschrieben. Das beenden der App durch drücken des Home-Buttons beendet auch die Aufzeichnung der Werte. Die SLQite-Datei kann nun bequem aus iTunes heraus auf einem Computer zur Weiterverabreitung gespeichert werden.
+

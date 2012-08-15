@@ -1,0 +1,99 @@
+\begin{thebibliography}{App12b}
+
+\bibitem[All11]{book002}
+A.~Allan.
+\newblock {\em iOS 4 Sensor Programming}.
+\newblock O'Reilly, Sebastopol, 2011.
+\newblock Rough Cuts.
+
+\bibitem[App11]{apple:001}
+Apple.
+\newblock Datei:acceleration\_axes.jpg.
+\newblock
+  \url{http://developer.apple.com/library/ios/#documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/MotionEvents/MotionEvents.html},
+  2011.
+\newblock [Online; Stand 4. Januar 2012].
+
+\bibitem[App12a]{apple:002}
+Apple.
+\newblock Cocoa touch – ios technology overview – apple developer.
+\newblock \url{https://developer.apple.com/technologies/ios/cocoa-touch.html},
+  2012.
+\newblock [Online; Stand 5. März 2012].
+
+\bibitem[App12b]{apple:003}
+Apple.
+\newblock ios developer center – apple developer.
+\newblock \url{https://developer.apple.com/}, 2012.
+\newblock [Online; Stand 7. März 2012].
+
+\bibitem[CH10]{book001}
+J.~Conway and A.~Hillegass.
+\newblock {\em iPhone Programming}.
+\newblock Big Nerd Ranch, Atlanta, 2010.
+
+\bibitem[DW11]{memsinvestorjournal}
+St.J. Dixon-Warren.
+\newblock Motion sensing in the iphone 4: Electronic compass.
+\newblock
+  \url{http://www.memsjournal.com/2011/02/motion-sensing-in-the-iphone-4-electronic-compass.html},
+  2011.
+\newblock [Online; Stand 14. März 2012].
+
+\bibitem[Gui12]{sensorsmag}
+D.~F. Guillou.
+\newblock Packaging mems: New manufacturing methodology substantially reduces
+  smart mems costs.
+\newblock \url{http://archives.sensorsmag.com/articles/1203/20/main.shtml},
+  2012.
+\newblock [Online; Stand 14. März 2012].
+
+\bibitem[Ker11]{wiki:006}
+Christian Kern.
+\newblock {\em RFID für Bibliotheken}.
+\newblock Springer, Berlin, 2011.
+
+\bibitem[Koc08]{paper:001}
+Thomas Koch.
+\newblock Rotationen mit quaternionen in der computergrafik, 2008.
+\newblock Diplomarbeit, Fachhochschule Gelsenkirchen.
+
+\bibitem[Mat09]{wiki:004}
+MathsPoetry.
+\newblock File:gimbal lock.png.
+\newblock \url{http://en.wikipedia.org/wiki/File:Gimbal_lock.png}, 2009.
+\newblock [Online; Stand 24. Februar 2012] This file is licensed under the
+  Creative Commons Attribution-Share Alike 3.0 Unported license.
+
+\bibitem[Mat12]{mathworks}
+MathWorks.
+\newblock Mathworks --- block reference (aerospace blockset\texttrademark ).
+\newblock
+  \url{http://www.mathworks.de/help/toolbox/aeroblks/f2-16051.html#f2-23009},
+  2012.
+\newblock [Online; Stand 7. März 2012].
+
+\bibitem[RAG04]{wiki:001}
+B.~Ristic, S.~Arulampalam, and N.~Gordon.
+\newblock {\em Beyond the Kalman Filter: Particle Filters for Tracking
+  Applications.}
+\newblock Artech House, 2004.
+
+\bibitem[Tec12]{unity}
+Unity Technologies.
+\newblock Unity – 3d game engine.
+\newblock \url{http://unity3d.com/}, 2012.
+\newblock [Online; Stand 4. März 2012].
+
+\bibitem[Wik12]{wiki:005}
+Wikipedia.
+\newblock Android (betriebssystem) --- wikipedia{,} die freie enzyklopädie.
+\newblock \url{http://de.wikipedia.org/wiki/Android_(Betriebssystem)}, 2012.
+\newblock [Online; Stand 4. März 2012].
+
+\bibitem[Zel09]{wiki:003}
+A.~Zell.
+\newblock Robotik i, 2009.
+\newblock Vorlesung, Universität Tübingen.
+
+\end{thebibliography}

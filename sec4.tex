@@ -14,7 +14,7 @@ Bei der Suche nach einem passenden Gerät kamen mehere Kriterien zum Tragen. Es 
 Wirklich am Markt vertreten waren zum Zeitpunkt der Hardware-Entscheidung (Anfang 2011) nur das Apple iPad 1 und das Motorola Xoom. Das iPad war mit Accelerometer und Kompass ausgestattet, jedoch nicht mit einem Gyroskop. Das Motorola Xoom hatte alle drei IMUs verbaut. Android Version 3.0 Honeycomb erschien im Februar 2011 und war die erste Android-Version, die für Tablets ausgelegt war. \cite{ wiki:005} Allerdings war diese Version des Betriebssystems anfangs Berichten zufolge instabil.
 	
 	\subsection{Wahl iPad 2}
-	Da das iPad 2 in den Startlöchern stand entschieden wir, unsere Entscheidung noch aufzuschieben. Am 11. März 2011 wurde es vorgestellt und die Ausstattung entsprach unseren Erwartungen, da es zusätzlich ein Gyroskop verbaut wurde. Zum Erscheinungszeitpunkt war Apple auch der Hersteller mit der meisten Erfahrung. Das iPad der ersten Generation war bereits ein Jahr auf dem Markt und hatte mit iOS ein ausgereiftes Betriebssystem. iOS wird auf dem Apple iPhone schon seit 2007 verwendet. Zudem war das iPad damals der unangefochtene Marktführer. Damit war auch gewährleistet, dass für eine eventuell entstehende App für Endanwender genügend potentielle Abnehmer bereit stünden.
+	Da das iPad 2 in den Startlöchern stand entschieden wir, unsere Entscheidung noch aufzuschieben. Am 11. März 2011 wurde es vorgestellt und die Ausstattung entsprach unseren Anforderungen, da zusätzlich ein Gyroskop verbaut wurde. Zum Erscheinungszeitpunkt war Apple auch der Hersteller mit der meisten Erfahrung. Das iPad der ersten Generation war bereits ein Jahr auf dem Markt und hatte mit iOS ein ausgereiftes Betriebssystem. iOS wird auf dem Apple iPhone schon seit 2007 verwendet. Zudem war das iPad damals der unangefochtene Marktführer. Damit war auch gewährleistet, dass für eine eventuell entstehende App für Endanwender genügend potentielle Abnehmer bereit stünden.
 	
 
 \section{Werkzeuge}
@@ -28,18 +28,18 @@ Zur Erstellung von iOS-Programmen steht Entwicklern Cocoa Touch von Apple zur Ve
 \item Verarbeitung von Daten
 \end{itemize}
 
-Cocoa Touch ist in Objective-C implementiert. Somit verwenden wir auch hauptsächlich Objective-C. \cite{apple:002}
+Cocoa Touch ist in Objective-C implementiert. Somit wird in diesem Projekt fast ausschließlich Objective-C verwendet. \cite{apple:002}
 
-Bei iOS sind für unsere Zwecke vor allem zwei Frameworks wichtig, die beide zum ersten Punkt der obigen Liste gehören. Core Location um den Kompass und Core Motion um das Gyroskop und das Accelerometer auszulesen.\\
+Bei iOS sind für die Berechnung der Orientierung vor allem zwei Frameworks wichtig, die beide zum ersten Punkt der obigen Liste gehören: Core Location um den Kompass und Core Motion um das Gyroskop und das Accelerometer auszulesen.\\
 
 \subsubsection{Core Motion}
-Core Motion liefert Daten die, mit Bewegung zu tun haben. Das sind einerseits die rohen Daten aller drei Sensoren, die in Kapitel \ref{Konzept} beschrieben wurden. Andererseits stellt Core Motion aber auch bereits bereinigte Bewegungs-Daten zur Verfügung. Zum Beispiel lassen sich Beschleunigung und Gravitation getrennt auslesen. Core Motion nimmt auch bereits die Stabilisierung des Elevation-Werts des Gyroskop vor. Besonders interessant für unseren Anwendungsfall ist die Klasse \texttt{CMAttitude}. Sie beinhaltet die Orientierung des Geräts zum Zeitpunkt der Abfrage. \texttt{CMAttitude} stellt diese in allen drei in Kapitel \ref{Stand der Technik} beschriebenen Formen zur Verfügung.
+Core Motion liefert Daten die, mit Bewegung zu tun haben. Das sind einerseits die rohen Daten aller drei Sensoren, die in Kapitel \ref{Konzept} beschrieben wurden, andererseits stellt Core Motion aber auch bereits bereinigte Bewegungs-Daten zur Verfügung. Zum Beispiel lassen sich Beschleunigung und Gravitation getrennt auslesen. Core Motion nimmt auch bereits die Stabilisierung des Elevation-Werts des Gyroskop vor. Besonders interessant ist die Klasse \texttt{CMAttitude} denn sie beinhaltet die Orientierung des Geräts zum Zeitpunkt der Abfrage. \texttt{CMAttitude} stellt diese in allen drei in Kapitel \ref{Stand der Technik} beschriebenen Formen zur Verfügung.
 
 \subsubsection{Core Location}
-Core Location enthält alle Informationen, die zur Bestimmung der aktuellen Position und der Ausrichtung des Geräts nötig sind. Core Location ist auch in der Lage, aus einem Geocode die zugehörige Stadt zu ermitteln und anders herum. Für uns ist die Klasse \texttt{CMHeading} interessant. Sie stellt den aktuellen Kompass-Wert bereit.
+Core Location enthält alle Informationen, die zur Bestimmung der aktuellen Position und der Ausrichtung des Geräts nötig sind. Core Location ist auch in der Lage, aus einem Geocode die zugehörige Stadt zu ermitteln und anders herum. Das \texttt{CMHeading}-Objekt stellt den aktuellen Kompass-Wert bereit.
 
 \subsection{Unity}
-Unity ist eine Spiele-Engine zur Entwicklung von Spielen für verschiedene Plattformen. Darunter sind PC-Betriebssyteme, mobile Betriebssyteme und Browser, aber auch herkömmliche Spiele-Konsolen. Unity ist neben der Unreal Engine eine der beliebtesten Spiele-Engines. In Unity kann man komplette 3D-Welten erstellen. Unity erlaubt den Export des Projekts in ein für die Zielplattform passendes Format. Im Falle von iOS wird ein Xcode Projekt erstellt. \cite{unity}
+Unity ist eine Spiele-Engine zur Entwicklung von Spielen für verschiedene Plattformen. Darunter sind PC-Betriebssyteme, mobile Betriebssyteme und Browser, aber auch herkömmliche Spiele-Konsolen. Unity ist neben der Unreal Engine eine der beliebtesten Spiele-Engines. In Unity kann man komplette 3D-Welten erstellen und es erlaubt den Export des Projekts in ein für die Zielplattform passendes Format. Im Falle von iOS wird ein Xcode Projekt erstellt. \cite{unity}
 
 \subsection{Xcode}
-Xcode ist die Entwicklungsumgebung für iOS-Anwendungen. In Xcode wird der Quellcode geschrieben und das Interface angeordnet. Mit Xcode kann die App, an der momentan gearbeitet wird, direkt auf ein angeschlossenes iOS-Gerät kompiliert werden. Am Ende wird mit Xcode auch die Datei zur Einreichung in den AppStore erstellt.
+Xcode ist die Entwicklungsumgebung für iOS-Anwendungen – hier wird der Quellcode geschrieben und das Interface angeordnet. Außerdem kann die App, an der momentan gearbeitet wird, mit Xcode direkt auf ein angeschlossenes iOS-Gerät kompiliert werden. Am Ende wird mit Xcode auch die Datei zur Einreichung in den AppStore erstellt. \cite{apple:003}

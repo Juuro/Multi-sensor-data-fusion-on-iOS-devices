@@ -1,0 +1,32 @@
+\BOOKMARK [0][-]{chapter*.3}{Abbildungsverzeichnis}{}% 1
+\BOOKMARK [0][-]{chapter*.4}{Listingverzeichnis}{}% 2
+\BOOKMARK [0][-]{chapter*.5}{Abk\374rzungsverzeichnis}{}% 3
+\BOOKMARK [0][-]{chapter.1}{Einleitung}{}% 4
+\BOOKMARK [1][-]{section.1.1}{Motivation}{chapter.1}% 5
+\BOOKMARK [0][-]{chapter.2}{Stand der Technik}{}% 6
+\BOOKMARK [1][-]{section.2.1}{Beschreibung der Orientierung von Objekten im dreidimensionalen Raum}{chapter.2}% 7
+\BOOKMARK [2][-]{subsection.2.1.1}{Euler-Winkel}{section.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.1.2}{Rotationsmatrizen}{section.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.1.3}{Quaternionen}{section.2.1}% 10
+\BOOKMARK [1][-]{section.2.2}{Positionsbestimmung}{chapter.2}% 11
+\BOOKMARK [0][-]{chapter.3}{Konzept}{}% 12
+\BOOKMARK [1][-]{section.3.1}{Accelerometer}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.2}{Gyroskop}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.3}{Kompass}{chapter.3}% 15
+\BOOKMARK [1][-]{section.3.4}{Multisensordatenfusion}{chapter.3}% 16
+\BOOKMARK [0][-]{chapter.4}{Plattform und Werkzeuge}{}% 17
+\BOOKMARK [1][-]{section.4.1}{Plattform}{chapter.4}% 18
+\BOOKMARK [2][-]{subsection.4.1.1}{\334berblick am Markt befindlicher Ger\344te}{section.4.1}% 19
+\BOOKMARK [2][-]{subsection.4.1.2}{Wahl iPad 2}{section.4.1}% 20
+\BOOKMARK [1][-]{section.4.2}{Werkzeuge}{chapter.4}% 21
+\BOOKMARK [2][-]{subsection.4.2.1}{Frameworks}{section.4.2}% 22
+\BOOKMARK [2][-]{subsection.4.2.2}{Unity}{section.4.2}% 23
+\BOOKMARK [2][-]{subsection.4.2.3}{Xcode}{section.4.2}% 24
+\BOOKMARK [0][-]{chapter.5}{Umsetzung}{}% 25
+\BOOKMARK [1][-]{section.5.1}{Unity-Integration}{chapter.5}% 26
+\BOOKMARK [1][-]{section.5.2}{Vorbereitung der n\366tigen Daten}{chapter.5}% 27
+\BOOKMARK [1][-]{section.5.3}{Multisensordatenfusion}{chapter.5}% 28
+\BOOKMARK [1][-]{section.5.4}{Test-App}{chapter.5}% 29
+\BOOKMARK [0][-]{chapter.6}{Ergebnis}{}% 30
+\BOOKMARK [0][-]{chapter.7}{Ausblick}{}% 31
+\BOOKMARK [0][-]{chapter.7}{Literaturverzeichnis}{}% 32
